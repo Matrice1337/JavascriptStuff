@@ -1,0 +1,95 @@
+/**
+ * @license
+ * Copyright 2019 Google LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+// @ts-nocheck TODO remove when fixed
+
+const urlParams = new URLSearchParams(location.search);
+var long
+var lat
+
+alert(location.search)
+
+
+
+
+
+//Loops through the URL's queries in array indecies, ["Key"="Value"]:
+for (const entry of urlParams.entries()) {
+
+  //If a key in index 0 of URL string == "something" - we want to set longtitude var:
+  if (entry[0] === "editor_console") {
+    long = "-2.25" //entry[1]
+    lat = "57.2" //entry[1]
+  }
+    long = "-2.25" //entry[1]
+    lat = "57.2" //entry[1]
+
+  if (entry[0] === "lat") {
+    lat = entry[1]
+  }
+
+  if (entry[0] === "long") {
+    long = entry[1]
+  }
+
+}
+
+//alert(long)
+
+var floatLat = parseFloat(lat)
+var floatLong = parseFloat(long)
+
+
+
+function initMap() {
+
+  //Handles the map properties, disables/enables things on the map itself, shows lng/lat of map screen:
+  const map = new google.maps.Map(document.getElementById("map"), {
+
+    //Disables Google Map's UI: zoom buttons, Map/Satellite View buttons, Toggle Fullscreen Button 
+    // disableDefaultUI: true,
+
+    // Disables only the maptype (Default/Satellite Buttons on top left)
+    mapTypeControl: false,
+    scaleControl: true,
+    zoomControl: true,
+
+    //Disables the little yellow guy
+    streetViewControl: false,
+
+    //how zoomed in it is, higher number = zoomed further out
+    zoom: 8,
+    //Where the map screen will look at:
+    center: {
+      lat: 57.2,
+      lng: -2.25
+    },
+
+    //Sets mapType to satellite viewing mode
+    mapTypeId: google.maps.MapTypeId.SATELLITE,
+  });
+  const geocoder = new google.maps.Geocoder();
+  const infowindow = new google.maps.InfoWindow();
+
+
+
+  //Temporary Lat/lng from query string:
+  var latlng = {
+    lat: 57.2,
+    lng: -2.25
+  }
+  //makes a marker with the query string lat/lng:
+  const marker = new google.maps.Marker({
+    position: latlng,
+    map: map,
+  });
+
+
+  document.getElementById("submit").addEventListener("click", () => {
+    geocodeLatLng(geocoder, map, infowindow);
+  });
+}
+
+window.initMap = initMap;
